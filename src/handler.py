@@ -1,7 +1,7 @@
 """ Example handler file. """
 
 import runpod
-from diffusers import AutoPipelineForText2Image
+from diffusers import StableDiffusionXLPipeline, DPMSolverSinglestepScheduler
 import torch
 import base64
 import io
@@ -11,8 +11,12 @@ import time
 # You will want models to be loaded into memory before starting serverless.
 
 try:
-    pipe = AutoPipelineForText2Image.from_pretrained("stabilityai/sdxl-turbo", torch_dtype=torch.float16, variant="fp16")
-    pipe.to("cuda")
+    pipe = StableDiffusionXLPipeline.from_single_file("/model.safetensors", torch_dtype=torch.float16, variant="fp16")
+    pipe.scheduler = DPMSolverSinglestepScheduler.from_config(
+        pipe.scheduler.config,
+        use_karras_sigmas=True,
+    )
+    pipe = pipe.to("cuda")
 except RuntimeError:
     quit()
 
@@ -22,7 +26,13 @@ def handler(job):
     prompt = job_input['prompt']
 
     time_start = time.time()
-    image = pipe(prompt=prompt, num_inference_steps=1, guidance_scale=0.0).images[0]
+    num_inference_steps = 5
+    guidance_scale = 2
+    image = pipe(prompt=prompt,
+    width=768,
+    height=768,
+    num_inference_steps=num_inference_steps,
+    guidance_scale=guidance_scale).images[0]
     print(f"Time taken: {time.time() - time_start}")
 
     buffer = io.BytesIO()
