@@ -29,8 +29,8 @@ def handler(job):
     num_inference_steps = 5
     guidance_scale = 2
     image = pipe(prompt=prompt,
-    width=768,
-    height=768,
+    width=1024,
+    height=1024,
     num_inference_steps=num_inference_steps,
     guidance_scale=guidance_scale).images[0]
     print(f"Time taken: {time.time() - time_start}")
