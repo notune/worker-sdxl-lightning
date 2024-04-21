@@ -16,8 +16,8 @@ Prerequisites: Docker & git installed, an sdxl-lightning model as .safetensors f
 6. `docker login --username=yourhubusername`
 7. Copy image-id from recently built image: `docker images`
 8. Tag image: `docker tag <image-id> yourhubusername/sdxll-custom:1.0.0`
-9. docker push yourhubusername/sdxll-custom:1.0.0
-10. create serverless worker on runpod with container image yourhubusername/sdxll-custom:1.0.0
+9. `docker push yourhubusername/sdxll-custom:1.0.0`
+10. create serverless worker on runpod with container image name `yourhubusername/sdxll-custom:1.0.0`
 
 ## Example Request
 
