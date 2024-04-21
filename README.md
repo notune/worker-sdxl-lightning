@@ -8,6 +8,7 @@ A specialized worker template for building custom RunPod Endpoint API workers ut
 
 ## Setup
 Prerequisites: Docker & git installed, an sdxl-lightning model as .safetensors file
+0. test the model pipeline/config in src/handler.py locally and make adjustments if necessary
 1. `git clone https://github.com/notune/worker-sdxl-lightning.git`
 2. `cd worker-sdxl-lightning`
 3. Add model.safetensors to root directory *(optional: if you named it differently change the line `ADD model.safetensors /` in Dockerfile and `pipe = StableDiffusionXLPipeline.from_single_file("/model.safetensors", torch_dtype=torch.float16, variant="fp16")` in src/handler.py)*
