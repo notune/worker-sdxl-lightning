@@ -6,6 +6,19 @@ A specialized worker template for building custom RunPod Endpoint API workers ut
 
 </div>
 
+## Setup
+Prerequisites: Docker & git installed, an sdxl-lightning model as .safetensors file
+1. `git clone https://github.com/notune/worker-sdxl-lightning.git`
+2. `cd worker-a1111`
+3. Add model.safetensors to root directory *(optional: if you named it differently change the line `ADD model.safetensors /` in Dockerfile and `pipe = StableDiffusionXLPipeline.from_single_file("/model.safetensors", torch_dtype=torch.float16, variant="fp16")` in src/handler.py)*
+4. `sudo DOCKER_BUILDKIT=1 docker build .`
+5. For Docker Hub: Create Repo on https://hub.docker.com/
+6. `docker login --username=yourhubusername`
+7. Copy image-id from recently built image: `docker images`
+8. Tag image: `docker tag <image-id> yourhubusername/sdxll-custom:1.0.0`
+9. docker push yourhubusername/sdxll-custom:1.0.0
+10. create serverless worker on runpod with container image yourhubusername/sdxll-custom:1.0.0
+
 ## Example Request
 
 ```python
